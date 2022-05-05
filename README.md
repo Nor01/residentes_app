@@ -60,10 +60,15 @@ php artisan serve
 The app will run by default on **http://localhost:8000** however to make some tests with the methods you will need to use postman as enviroment.
 
 For testing `API Methods` using [POSTMAN :](https://www.postman.com/)
+
 *`!important:` This information is for documentation only.*
+
 > `GET` Method: `{{baseUrl}}`/api/v1/auth/residentes
+
 > `POST` Method: `{{baseUrl}}`/api/v1/auth/logout
+
 > `POST` Method: `{{baseUrl}}`/api/v1/register
+
 > `POST` Method: `{{baseUrl}}`/api/v1/login
 
 *login and register* are public methods, in order to use *logout and residentes* the user must be logged in, because the `${token}` is created and assigned once the user is register.
