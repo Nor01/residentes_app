@@ -82,6 +82,6 @@ Fundamentos de IT - CEUTEC Q3-2022
 | Orinson Lobo | 61521041| [mloboc](https://github.com/mloboc)
 | Erick Pineda | 20641025| [erickrpineda](https://github.com/erickrpineda)
 | Allan Lopez | 21211119| [alopez94](https://github.com/alopez94)
-| Francisco Garcia | ----------- | [frangar97](https://github.com/frangar97)
+| Francisco Garcia | 61641192 | [frangar97](https://github.com/frangar97)
 
 **Free Software, Hell Yeah!**
