@@ -26,18 +26,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['middleware' => ['role:residente']], function () {
+    //rutas accesibles solo para residentes
+    Route::post('/panico', function(){return 'El residente ha pulsado el boton de panico!';});
+});
+
 //Protected Methods
 Route::group(['middleware'=>['auth:sanctum']], function () {
-    
+    //rutas accesibles solo para admins #pending...
     Route::get('/residentes', function(){return 'Listado de residentes';});
 
     Route::post('/logout', [AuthController::class, 'logout']);
-    
-    // Route::post('/residentes/{id_residente}', [ResidenteController::class, 'create']);
-    // Route::put('/residentes/{id_residente}', [ResidenteController::class, 'update']);
-    // Route::delete('/residentes/{id_residente}', [ResidenteController::class, 'delete']);
-
-
 });
 
 

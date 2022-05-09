@@ -16,8 +16,6 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    //
-
     public function register(Request $request){
         $fields = $request->validate([
             'name' =>'required|string',
@@ -38,6 +36,8 @@ class AuthController extends Controller
             'token'=>$token
         ];
 
+
+
         return response($response,201);
     }
 
@@ -57,16 +57,7 @@ class AuthController extends Controller
             ]);
         }
 
-
         $user = User::where('email', $request->email)->first();
-
-        // $user = User::where('email',$fields['email'])->first();
-
-        // if(!user || !Hash::check($fields['password'],$user->password)){
-        //     return response(
-        //         ['messsage'=>'Bad credentials'],401
-        //     );
-        // }
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
@@ -130,7 +121,6 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request){
-        // auth()->user()->tokens()->delete(); //error in this tokens() method
         $request->user()->currentAccessToken()->delete();
         return ['message'=>'logged out'];
     }
