@@ -49,17 +49,27 @@ class AuthController extends Controller
 
         $credentials = request(['email', 'password']);
 
-        if(!Auth::attempt($credentials)){
+        // if(!Auth::attempt($credentials)){
 
-            return response()->json([
-                'status_code' => '500',
-                'message' => 'No authorized'
-            ]);
-        }
+        //     return response()->json([
+        //         'status_code' => '500',
+        //         'message' => 'No authorized'
+        //     ]);
+        // }
 
         $user = User::where('email', $request->email)->first();
 
-        $token = $user->createToken('myapptoken')->plainTextToken;
+        if(Auth::guard('admin-api')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+            //generate the token for the user
+            $token = auth()->guard('admin-api')->$user->createToken('authToken')->accessToken;
+
+            // $token = $user->createToken('myapptoken')->plainTextToken;
+
+        }
+
+        
+
+        // $token = $user->createToken('myapptoken')->plainTextToken;
 
         $response = [
             'user'=>$user,
