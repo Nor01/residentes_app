@@ -1,0 +1,329 @@
+#1 composer create-project laravel/laravel <app_name>
+
+
+2 #===Create a model===
+php artisan make:model Product -m
+
+->edit the model with the params
+
+php artisan migrate
+
+3 #=== Use the model o API route ===
+
+use App\Models\Product;
+
+# now we can create information from the route
+# as a testing because is not the correct way to
+# create the information
+    return Product::create([
+        'name'=>'Product One',
+        'slug'=>'product-one',
+        'description'=>'this is product one',
+        'price'=>'99.99'
+    ]);
+
+
+4 # Remember we cannot add fields with specify 
+# the one in the model
+# add fillable in Model
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'price'
+    ];
+
+5 # create a controller to save products
+
+php artisan make:controller ProductController --api
+
+# now we can cut the use model in the route 
+# because we will use a controller
+# and add the use model in the controller
+
+index function will -> return Product::all();
+
+store function will -> return Product::create($request->all());
+
+#here we can add a validate function to require the fields
+
+show function will -> return Product::find($id);
+
+6 # the use controller will be put in the route
+
+use App\Http\Controllers\ProductController;
+
+#7 Creating Validations to display messages in error cases
+
+        $request->validate([
+            'name'=>'required',
+            'slug'=>'required',
+            'price'=>'required'
+        ]);
+
+#8 Instead declaring every single route 
+# we can create a resource group to join this methods
+
+Route::resource('products', ProductController::class);
+
+# execute this to see the routes availables 
+# and this routes will be added auto on calls
+
+php artisan route:list
+
+#9 to update the product should be a little different
+# we need to get the product, the create the product with new updates so we need 
+# the product $id
+
+        $product = Product::find($id);
+        $product->update($request->all());
+
+        return $product;
+
+#10 to delete the product 
+
+        Product::destroy($id);
+
+#11 Create another function to search an entry by name
+
+    /**
+     * Search the specified resource from storage.
+     *
+     * @param  str  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function search($name)
+    {
+        //
+        return Product::where('name','like','%'.$name.'%')->get();
+    }
+
+#12 Is needed to add the search function inside routes
+# because the resource group doesnt include this new function
+
+Route::get('/products/search/{name}', [ProductController::class, 'search']);
+
+END FOR CRUD PRODUCTS
+BEGIN AUTHENTICATION WITH SANCTUM
+
+#1 installing sanctum
+composer require laravel/sanctum
+
+#2 publish the package provider
+
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+
+#3 update the migrations
+
+php artisan migrate
+
+#4 update/replace app/Http/Kernel.php
+
+'api' => [
+    \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+    'throttle:api',
+    \Illuminate\Routing\Middleware\SubstituteBindings::class,
+],
+
+#5 To begin issuing tokens for users, your User model should use the Laravel\Sanctum\HasApiTokens trait:
+# edit the User Model
+use Laravel\Sanctum\HasApiTokens;
+ 
+class User extends Authenticatable
+{
+    use HasApiTokens, HasFactory, Notifiable;
+}
+
+#6 to protect the routes we use 
+
+use Illuminate\Http\Request;
+ 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+#However we create a Group instead to protect routes
+Route::group(['middleware' => ['auth:sanctum']], function () {
+
+    Route::get('/products/search/{name}', [ProductController::class, 'search']);
+
+});
+
+#7 Create a new controller to create logins
+
+php artisan make:controller AuthController
+
+#8 Remember the uses 
+use App\Models\User;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
+
+#9 create the function register
+
+    public function register(Request $request){
+        $fields = $request->validate([
+            'name' =>'required|string',
+            'email'=>'required|string|unique:users,email',
+            'password'=>'required|string|confirmed'
+        ]);
+
+        //Probably we will need a controller and model for this
+        $user = User::create([
+            'name'=>$fields['name'],
+            'email'=>$fields['email'],
+            'password'=>bcrypt($fields['password'])
+        ]);
+
+        $token = $user->createToken('myapptoken')->plainTextToken;
+
+        $response = [
+            'user'=>$user,
+            'token'=>$token
+        ];
+
+        return response($response,201);
+    }
+
+#10 create the function logout 
+
+    public function logout(Request $request){
+        $request->user()->currentAccessToken()->delete();
+        return ['message'=>'logged out'];
+    }
+
+#11 Create a function login 
+
+    public function login(Request $request){
+        $fields = $request->validate([
+            'email'=>'required|string',
+            'password'=>'required|string'
+        ]);
+
+        //Check email
+        $user = User::where('email',$fields['email'])->first();
+
+        //Check password
+        if(!$user || !Hash::check($fields['password'], $user->password)){
+
+            return response ([
+                'message'=>'Bad credentials'
+            ], 401);
+        }
+
+        $token = $user->createToken('myapptoken')->plainTextToken;
+
+        $response = [
+            'user'=>$user,
+            'token'=>$token
+        ];
+
+        return response($response,201);
+    }
+
+ENDS FOR AUTHENTICATIONS
+
+BEGIN ROLE PERMISSIONS
+
+#1 1.At first lets create a User Roles Model relationship
+# At first We will create a One to Many Relation with Roles and user.
+# At first create a Model,Factory,Controller for both Roles and Users
+# this creates factories,migration and seeder and seeders too
+php artisan make:model Role -fms
+
+#2 For Users lets just make a Controller which is a resource Controller.
+php artisan make:controller UserController --resource
+
+#3 One to Many Relations
+# Here Role has Many Users and User BelongToRole
+# In Role.php
+
+    use HasFactory;
+    protected $guarded=[];
+
+    public function users(){
+        return $this->hasMany(User::class);
+    }
+
+# In User.php
+
+    public function role(){
+        return $this->belongsTo(Role::class);
+    }
+
+# Note Carefully
+# In migrations folder keep the Role migrations above User migrations
+# Role Migrations
+# This is how your Role migrations would look like
+  
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string("name");
+            $table->timestamps();
+        });
+
+# User Migrations
+# This is how your User migrations would look like
+
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+
+            $table->foreignId("role_id")->constrained("roles");
+            
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+# execute migrate
+
+php artisan migrate
+
+# 4 Now lets create some dunny data with RoleSeeder
+# Go to database/seeder/RoleSeeder.php if you dont find any dont worry run php artisan make:seeder RoleSeeder that is you have not created seeder.
+
+use App\Models\Role;
+
+    public function run()
+    {
+        Role::insert([
+            ['name'=>'Admin'],
+            ['name'=>'Resident'],
+            ['name'=>'Security']
+        ]);
+    }
+
+# Here we will have 3 roles
+# 1.Admin
+# 2.Resident
+# 3.Security
+# Now only run the RoleSeeder
+# This is the way if you only want to run a specific seeder.
+If you have done everything correct you will see
+
+php artisan db:seed --class=RoleSeeder
+
+# 5 So create an AuthController aand also a RegisterRequest
+
+php artisan make:request RegisterRequest
+
+        return [
+            //
+
+            'name'=>['required', 'max:255'],
+            'email'=>['required', 'email', 'max:255'],
+            'role_id'=>['required'],
+            'password'=>['required','max:255'],
+            'password_confirmed'=>['required','same:password']
+        ];
+
+php artisan make:request LoginRequest
+
+        return [
+            //
+            'email'=>['required'],
+            'password'=>['required']
+        ];
