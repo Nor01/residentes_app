@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 
 /*
@@ -15,29 +17,27 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-//public methods
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::get('/users', [UserController::class,'index']);
+Route::get('/users/{id}', [UserController::class,'show']);
+Route::get('/users/search/{name}', [UserController::class, 'search']);
+
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+
+    Route::post('/users',[UserController::class,'store']);
+    Route::put('/users/{id}', [UserController::class,'update']);
+    Route::delete('/users/{id}', [UserController::class,'destroy']);
+
+    Route::post('/logout',[AuthController::class,'logout']);
+
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::group(['middleware' => ['role:residente']], function () {
-    //rutas accesibles solo para residentes
-    Route::post('/panico', function(){return 'El residente ha pulsado el boton de panico!';});
-});
-
-//Protected Methods
-Route::group(['middleware'=>['auth:sanctum']], function () {
-    //rutas accesibles solo para admins #pending...
-    Route::get('/residentes', function(){return 'Listado de residentes';});
-
-    Route::post('/logout', [AuthController::class, 'logout']);
-});
-
-
-

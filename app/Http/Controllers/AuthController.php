@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Models\User;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Validation\Rules\Password as RulesPassword;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    //
     public function register(Request $request){
         $fields = $request->validate([
             'name' =>'required|string',
@@ -23,6 +22,7 @@ class AuthController extends Controller
             'password'=>'required|string|confirmed'
         ]);
 
+        //Probably we will need a controller and model for this
         $user = User::create([
             'name'=>$fields['name'],
             'email'=>$fields['email'],
@@ -36,28 +36,31 @@ class AuthController extends Controller
             'token'=>$token
         ];
 
-
-
         return response($response,201);
+    }
+
+
+    public function logout(Request $request){
+        $request->user()->currentAccessToken()->delete();
+        return ['message'=>'logged out'];
     }
 
     public function login(Request $request){
         $fields = $request->validate([
-            'email'=>'required|email',
-            'password'=>'required'
+            'email'=>'required|string',
+            'password'=>'required|string'
         ]);
 
-        $credentials = request(['email', 'password']);
+        //Check email
+        $user = User::where('email',$fields['email'])->first();
 
-        if(!Auth::attempt($credentials)){
+        //Check password
+        if(!$user || !Hash::check($fields['password'], $user->password)){
 
-            return response()->json([
-                'status_code' => '500',
-                'message' => 'No authorized'
-            ]);
+            return response ([
+                'message'=>'Bad credentials'
+            ], 401);
         }
-
-        $user = User::where('email', $request->email)->first();
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
@@ -93,7 +96,7 @@ class AuthController extends Controller
 
         $request->validate([
             'token' => 'required',
-            'email' => 'required|email',
+            'email' => 'required',
             'password'=> ['required', 'confirmed', RulesPassword::defaults()],
         ]);
 
@@ -118,10 +121,5 @@ class AuthController extends Controller
         }
 
         return response(['message'=>__($status)],500);
-    }
-
-    public function logout(Request $request){
-        $request->user()->currentAccessToken()->delete();
-        return ['message'=>'logged out'];
     }
 }
