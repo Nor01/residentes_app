@@ -16,7 +16,7 @@
             <div class="container px-4 mx-auto md:flex md:items-center">
 
             <div class="flex justify-between items-center">
-                <a href="erd" class="font-bold text-xl text-indigo-600">ERD</a>
+                <a href="{{config('laravel-erd.url')}}" class="font-bold text-xl text-indigo-600">ERD</a>
             </div>
 
                 <div class="hidden md:flex flex-col md:flex-row md:ml-auto mt-3 md:mt-0" id="navbar-collapse">
@@ -172,7 +172,7 @@ function init() {
               selectionAdorned: true,
               layerName: "Foreground",
               reshapable: true,
-              routing: go.Link.AvoidsNodes,
+              routing: go.Link.{{ $routingType }},
               corner: 5,
               curve: go.Link.Orthogonal,
               curviness: 0,
@@ -337,7 +337,7 @@ function setCheckboxesForTableNames() {
   myDiagram.model.linkDataArray = newLinkDataArray
 }
 
-var docs = "{\"link_data\":[{\"from\":\"users\",\"to\":\"personal_access_tokens\",\"fromText\":null,\"toText\":null,\"fromPort\":\"id\",\"toPort\":\"tokenable_id\",\"type\":\"MorphMany\"},{\"from\":\"users\",\"to\":\"notifications\",\"fromText\":null,\"toText\":null,\"fromPort\":\"id\",\"toPort\":\"notifiable_id\",\"type\":\"MorphMany\"},{\"from\":\"users\",\"to\":\"notifications\",\"fromText\":null,\"toText\":null,\"fromPort\":\"id\",\"toPort\":\"notifiable_id\",\"type\":\"MorphMany\"},{\"from\":\"users\",\"to\":\"notifications\",\"fromText\":null,\"toText\":null,\"fromPort\":\"id\",\"toPort\":\"notifiable_id\",\"type\":\"MorphMany\"}],\"node_data\":[{\"key\":\"addresses\",\"schema\":[]},{\"key\":\"chat_messages\",\"schema\":[]},{\"key\":\"common_places\",\"schema\":[]},{\"key\":\"expense_registries\",\"schema\":[]},{\"key\":\"houses_ids\",\"schema\":[]},{\"key\":\"houses_id_details\",\"schema\":[]},{\"key\":\"incident_reports\",\"schema\":[]},{\"key\":\"incident_types\",\"schema\":[]},{\"key\":\"income_expenses_categories\",\"schema\":[]},{\"key\":\"income_registries\",\"schema\":[]},{\"key\":\"messages\",\"schema\":[]},{\"key\":\"payments\",\"schema\":[]},{\"key\":\"payment_types\",\"schema\":[]},{\"key\":\"reserve_common_places\",\"schema\":[]},{\"key\":\"residences\",\"schema\":[]},{\"key\":\"residentes\",\"schema\":[]},{\"key\":\"users\",\"schema\":[{\"name\":\"id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"email\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"email_verified_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"password\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"remember_token\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"user_types\",\"schema\":[]},{\"key\":\"visit_active_days\",\"schema\":[]},{\"key\":\"visit_events\",\"schema\":[]},{\"key\":\"visit_types\",\"schema\":[]}]}"
+var docs = {!! json_encode($docs) !!}
 docs = JSON.parse(docs)
 nodeDataArray = docs.node_data
 linkDataArray = docs.link_data
