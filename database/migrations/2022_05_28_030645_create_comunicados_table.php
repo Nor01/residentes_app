@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('comunicados', function (Blueprint $table) {
             $table->id();
-            $table->string("descripcion");
-            $table->date("fecha");
+            $table->string('descripcion');
+            $table->string('fecha');
             $table->timestamps();
         });
     }

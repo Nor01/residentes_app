@@ -30,7 +30,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::get("/comunicado",[ComunicadoController::class,'index']);
-Route::post("/comunicado",[ComunicadoController::class,'createComunicado']);
+Route::post("/comunicado",[ComunicadoController::class,'store']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
