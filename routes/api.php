@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComunicadoController;
 use App\Http\Controllers\IncidenteController;
+use App\Http\Controllers\EncuestaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,9 @@ Route::get('/comunicado/search/{fecha}', [ComunicadoController::class, 'search']
 Route::get("/incidente",[IncidenteController::class,'index']);
 Route::get("/incidente/search/{fecha}",[IncidenteController::class,'searchFecha']);
 Route::get("/incidente/search/{lugar}",[IncidenteController::class,'searchLugar']);
+
+
+Route::get("/encuesta",[EncuestaController::class,'index']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
