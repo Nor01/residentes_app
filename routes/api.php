@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ComunicadoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,9 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::get("/comunicado",[ComunicadoController::class,'index']);
+Route::post("/comunicado",[ComunicadoController::class,'createComunicado']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
