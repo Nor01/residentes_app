@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComunicadoController;
 use App\Http\Controllers\IncidenteController;
 use App\Http\Controllers\EncuestaController;
+use App\Http\Controllers\ReservacionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,9 @@ Route::get("/incidente/search/{lugar}",[IncidenteController::class,'searchLugar'
 Route::get("/encuesta",[EncuestaController::class,'index']);
 Route::get('/encuesta/search/{titulo}', [EncuestaController::class, 'search']);
 
+Route::get("/reservacion",[ReservacionController::class,'index']);
+Route::get('/reservacion/search/{titulo}', [ReservacionController::class, 'search']);
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/users',[UserController::class,'store']);
@@ -56,6 +60,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/encuesta',[EncuestaController::class,'store']);
     Route::delete('/encuesta/{id}', [EncuestaController::class,'destroy']);
+
+    Route::post('/reservacion',[ReservacionController::class,'store']);
+    Route::delete('/reservacion/{id}', [ReservacionController::class,'destroy']);
 
     Route::post('/logout',[AuthController::class,'logout']);
 
