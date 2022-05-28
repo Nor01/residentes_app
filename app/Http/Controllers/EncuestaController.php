@@ -37,6 +37,14 @@ class EncuestaController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'titulo'=>'required',
+            'fecha'=>'required',
+            'descripcion'=>'required',
+            'link'=>'required'
+        ]);
+
+        return Encuesta::create($request->all());
     }
 
     /**
@@ -82,5 +90,18 @@ class EncuestaController extends Controller
     public function destroy($id)
     {
         //
+        return Encuesta::destroy($id);
+    }
+
+    /**
+     * Search the specified resource from storage.
+     *
+     * @param  str  $titulo
+     * @return \Illuminate\Http\Response
+     */
+    public function search($titulo)
+    {
+        //
+        return Encuesta::where('titulo','like','%'.$titulo.'%')->get();
     }
 }

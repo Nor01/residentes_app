@@ -40,6 +40,7 @@ Route::get("/incidente/search/{lugar}",[IncidenteController::class,'searchLugar'
 
 
 Route::get("/encuesta",[EncuestaController::class,'index']);
+Route::get('/encuesta/search/{titulo}', [EncuestaController::class, 'search']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
@@ -52,6 +53,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post("/incidente",[IncidenteController::class,'store']);
     Route::delete("/incidente/{id}",[IncidenteController::class,'destroy']);
+
+    Route::post('/encuesta',[EncuestaController::class,'store']);
+    Route::delete('/encuesta/{id}', [EncuestaController::class,'destroy']);
 
     Route::post('/logout',[AuthController::class,'logout']);
 
