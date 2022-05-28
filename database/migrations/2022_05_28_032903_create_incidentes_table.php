@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('incidentes', function (Blueprint $table) {
             $table->id();
+            $table->string('titulo');
             $table->string('fecha');
             $table->string('lugar');
             $table->string('descripcion');

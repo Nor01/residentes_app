@@ -17,6 +17,7 @@ class IncidenteSeeder extends Seeder
     {
         //
         Incidente::create([
+            'titulo'=>'Basura en parque',
             'fecha'=>'01/05/2022',
             'lugar'=>'Parquecito',
             'descripcion'=>'Habia mucha basura en el parquecito despues del cumple de Pepito'

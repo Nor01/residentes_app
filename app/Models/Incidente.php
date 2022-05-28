@@ -10,6 +10,7 @@ class Incidente extends Model
     use HasFactory;
 
     protected $fillable = [
+        'titulo',
         'fecha',
         'lugar',
         'descripcion'

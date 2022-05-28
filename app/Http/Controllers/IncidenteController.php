@@ -39,6 +39,7 @@ class IncidenteController extends Controller
     {
         //
         $request->validate([
+            'titulo'=>'required',
             'fecha'=>'required',
             'lugar'=>'required',
             'descripcion'=>'required'
