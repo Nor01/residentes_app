@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComunicadoController;
+use App\Http\Controllers\IncidenteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,13 +31,18 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::get("/comunicado",[ComunicadoController::class,'index']);
-Route::post("/comunicado",[ComunicadoController::class,'store']);
+Route::get('/comunicado/search/{fecha}', [ComunicadoController::class, 'search']);
+
+Route::get("/incidente",[IncidenteController::class,'index']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/users',[UserController::class,'store']);
     Route::put('/users/{id}', [UserController::class,'update']);
     Route::delete('/users/{id}', [UserController::class,'destroy']);
+
+    Route::post("/comunicado",[ComunicadoController::class,'store']);
+    Route::delete("/comunicado/{id}",[ComunicadoController::class,'destroy']);
 
     Route::post('/logout',[AuthController::class,'logout']);
 

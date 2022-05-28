@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Comunicado;
+use App\Models\Incidente;
 
-class ComunicadoController extends Controller
+class IncidenteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,8 @@ class ComunicadoController extends Controller
     public function index()
     {
         //
-        return Comunicado::all();
+
+        return Incidente::all();
     }
 
     /**
@@ -37,14 +38,13 @@ class ComunicadoController extends Controller
     public function store(Request $request)
     {
         //
-
         $request->validate([
-            'descripcion'=>'required',
-            'fecha' => 'required'
+            'fecha'=>'required',
+            'lugar'=>'required',
+            'descripcion'=>'required'
         ]);
 
-        return Comunicado::create($request->all());
-
+        return Incidente::create($request->all());
     }
 
     /**
@@ -90,7 +90,7 @@ class ComunicadoController extends Controller
     public function destroy($id)
     {
         //
-        return Comunicado::destroy($id);
+        return Incidente::destroy($id);
     }
 
     /**
@@ -99,9 +99,21 @@ class ComunicadoController extends Controller
      * @param  str  $fecha
      * @return \Illuminate\Http\Response
      */
-    public function search($fecha)
+    public function searchFecha($fecha)
     {
         //
-        return Comunicado::where('fecha','like','%'.$fecha.'%')->get();
+        return Incidente::where('fecha','like','%'.$fecha.'%')->get();
+    }
+
+    /**
+     * Search the specified resource from storage.
+     *
+     * @param  str  $lugar
+     * @return \Illuminate\Http\Response
+     */
+    public function searchLugar($lugar)
+    {
+        //
+        return Incidente::where('lugar','like','%'.$lugar.'%')->get();
     }
 }
