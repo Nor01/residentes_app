@@ -34,6 +34,8 @@ Route::get("/comunicado",[ComunicadoController::class,'index']);
 Route::get('/comunicado/search/{fecha}', [ComunicadoController::class, 'search']);
 
 Route::get("/incidente",[IncidenteController::class,'index']);
+Route::get("/incidente/search/{fecha}",[IncidenteController::class,'searchFecha']);
+Route::get("/incidente/search/{lugar}",[IncidenteController::class,'searchLugar']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
@@ -43,6 +45,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post("/comunicado",[ComunicadoController::class,'store']);
     Route::delete("/comunicado/{id}",[ComunicadoController::class,'destroy']);
+
+    Route::post("/incidente",[IncidenteController::class,'store']);
+    Route::delete("/incidente/{id}",[IncidenteController::class,'destroy']);
 
     Route::post('/logout',[AuthController::class,'logout']);
 
