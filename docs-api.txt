@@ -59,6 +59,13 @@ $this->call(UserSeeder::class);
 #1.13 create an user controller
 php artisan make:controller Admin\UserController -r
 
+#eloquent relationship
+php artisan make:migration create_roles_table --create=roles
+php artisan make:migration create_users_table --create=users
+
+php artisan migration
+
+
 #1.14 installing sanctum
 composer require laravel/sanctum
 

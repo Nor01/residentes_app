@@ -9,6 +9,9 @@ use App\Http\Controllers\ComunicadoController;
 use App\Http\Controllers\IncidenteController;
 use App\Http\Controllers\EncuestaController;
 use App\Http\Controllers\ReservacionController;
+use App\Http\Controllers\TipoVisitaController;
+use App\Http\Controllers\VisitaEventualController;
+use App\Http\Controllers\VisitaFrecuenteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +48,12 @@ Route::get('/encuesta/search/{titulo}', [EncuestaController::class, 'search']);
 
 Route::get("/reservacion",[ReservacionController::class,'index']);
 Route::get('/reservacion/search/{titulo}', [ReservacionController::class, 'search']);
+
+Route::get("/tipo-visita",[TipoVisitaController::class,'index']);
+Route::post('/tipo-visita', [TipoVisitaController::class, 'store']);
+
+Route::get("/visita-frecuente",[VisitaFrecuenteController::class,'index']);
+Route::post('/visita-frecuente', [VisitaFrecuenteController::class, 'store']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 

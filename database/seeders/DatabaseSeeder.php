@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\VisitaFrecuente;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -27,5 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(IncidenteSeeder::class);
         $this->call(EncuestaSeeder::class);
         $this->call(ReservacionSeeder::class);
+        $this->call(TipoVisitaSeeder::class);
+        $this->call(VisitaFrecuenteSeeder::class);
     }
 }
