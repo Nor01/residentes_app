@@ -51,4 +51,8 @@ class User extends Authenticatable
 
         $this->notify(new ResetPasswordNotification($url));
     }
+
+    public function tipoUsuario(){
+        return $this->belongsTo(TipoUsuario::class, "tipo_usuario_id", "id");
+    }
 }

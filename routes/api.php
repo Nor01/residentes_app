@@ -12,6 +12,7 @@ use App\Http\Controllers\ReservacionController;
 use App\Http\Controllers\TipoVisitaController;
 use App\Http\Controllers\VisitaEventualController;
 use App\Http\Controllers\VisitaFrecuenteController;
+use App\Http\Controllers\TipoUsuarioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,8 @@ Route::post('/tipo-visita', [TipoVisitaController::class, 'store']);
 
 Route::get("/visita-frecuente",[VisitaFrecuenteController::class,'index']);
 Route::post('/visita-frecuente', [VisitaFrecuenteController::class, 'store']);
+
+Route::get("/tipo-usuario",[TipoUsuarioController::class,'index']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
