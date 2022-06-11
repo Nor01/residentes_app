@@ -38,33 +38,29 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get("/comunicado",[ComunicadoController::class,'index']);
 Route::get('/comunicado/search/{fecha}', [ComunicadoController::class, 'search']);
+Route::post("/comunicado",[ComunicadoController::class,'store']);
+Route::delete("/comunicado/{id}",[ComunicadoController::class,'destroy']);
 
 Route::get("/incidente",[IncidenteController::class,'index']);
 Route::get("/incidente/search/{fecha}",[IncidenteController::class,'searchFecha']);
 Route::get("/incidente/search/{lugar}",[IncidenteController::class,'searchLugar']);
+Route::post("/incidente",[IncidenteController::class,'store']);
+Route::delete("/incidente/{id}",[IncidenteController::class,'destroy']);
 
 
 Route::get("/encuesta",[EncuestaController::class,'index']);
 Route::get('/encuesta/search/{titulo}', [EncuestaController::class, 'search']);
+Route::post('/encuesta',[EncuestaController::class,'store']);
+Route::delete('/encuesta/{id}', [EncuestaController::class,'destroy']);
 
 Route::get("/reservacion",[ReservacionController::class,'index']);
 Route::get('/reservacion/search/{titulo}', [ReservacionController::class, 'search']);
+Route::post('/reservacion',[ReservacionController::class,'store']);
+Route::delete('/reservacion/{id}', [ReservacionController::class,'destroy']);
 
 Route::post('/users',[UserController::class,'store']);
 Route::put('/users/{id}', [UserController::class,'update']);
 Route::delete('/users/{id}', [UserController::class,'destroy']);
-
-Route::post("/comunicado",[ComunicadoController::class,'store']);
-Route::delete("/comunicado/{id}",[ComunicadoController::class,'destroy']);
-
-Route::post("/incidente",[IncidenteController::class,'store']);
-Route::delete("/incidente/{id}",[IncidenteController::class,'destroy']);
-
-Route::post('/encuesta',[EncuestaController::class,'store']);
-Route::delete('/encuesta/{id}', [EncuestaController::class,'destroy']);
-
-Route::post('/reservacion',[ReservacionController::class,'store']);
-Route::delete('/reservacion/{id}', [ReservacionController::class,'destroy']);
 
 Route::get("/tipo-visita",[TipoVisitaController::class,'index']);
 Route::post('/tipo-visita', [TipoVisitaController::class, 'store']);

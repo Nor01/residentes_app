@@ -15,7 +15,11 @@ class VisitaFrecuenteController extends Controller
     public function index()
     {
         //
-        return VisitaFrecuente::all();
+        return VisitaFrecuente::query()
+            ->with(['tipovisita' => function ($query) {
+                $query->select('id','nombre');
+            }])
+            ->get();
     }
 
     /**

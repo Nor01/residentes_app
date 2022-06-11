@@ -62,14 +62,14 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = $user->createToken('myapptoken')->plainTextToken;
+        /*$token = $user->createToken('myapptoken')->plainTextToken;
 
         $response = [
             'user'=>$user,
             'token'=>$token
-        ];
+        ];*/
 
-        return response($response,201);
+        return response($user,201);
     }
 
     public function forgotPassword(Request $request){
