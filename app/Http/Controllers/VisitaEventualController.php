@@ -14,7 +14,11 @@ class VisitaEventualController extends Controller
      */
     public function index()
     {
-        //
+        return VisitaEventual::query()
+            ->with(['tipovisita' => function ($query) {
+                $query->select('id','nombre');
+            }])
+            ->get();
     }
 
     /**
@@ -35,7 +39,13 @@ class VisitaEventualController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre'=>'required',
+            'notas'=>'required',
+            'tipo_visita_id'=>'required'
+        ]);
+
+        return VisitaEventual::create($request->all());
     }
 
     /**

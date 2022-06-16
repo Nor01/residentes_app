@@ -68,6 +68,9 @@ Route::post('/tipo-visita', [TipoVisitaController::class, 'store']);
 Route::get("/visita-frecuente",[VisitaFrecuenteController::class,'index']);
 Route::post('/visita-frecuente', [VisitaFrecuenteController::class, 'store']);
 
+Route::get("/visita-eventual",[VisitaEventualController::class,'index']);
+Route::post('/visita-eventual', [VisitaEventualController::class, 'store']);
+
 Route::get("/tipo-usuario",[TipoUsuarioController::class,'index']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {

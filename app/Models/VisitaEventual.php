@@ -9,6 +9,12 @@ class VisitaEventual extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "nombre",
+        "notas",
+        "tipo_visita_id"
+    ];
+
     public function tipovisita(){
         return $this->belongsTo(TipoVisita::class, "tipo_visita_id", "id");
     }
